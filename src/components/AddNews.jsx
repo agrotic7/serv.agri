@@ -14,45 +14,43 @@ async function uploadImageToStorage(file) {
 }
 
 const AddNews = ({ onAdd }) => {
-  const [form, setForm] = useState({ title: '', content: '', image: '' });
+  const [form, setForm] = useState({ title: '', content: '' });
   const [status, setStatus] = useState('');
-  const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imageFiles, setImageFiles] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
+    const files = Array.from(e.target.files).slice(0, 5);
+    setImageFiles(files);
+    const previews = files.map(file => URL.createObjectURL(file));
+    setImagePreviews(previews);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('Envoi...');
-    let imageUrl = form.image;
+    let imageUrls = [];
     try {
-      if (imageFile) {
-        imageUrl = await uploadImageToStorage(imageFile);
+      if (imageFiles.length > 0) {
+        for (let file of imageFiles) {
+          const url = await uploadImageToStorage(file);
+          imageUrls.push(url);
+        }
       }
       const { data, error } = await supabase
         .from('news')
-        .insert([{ ...form, image: imageUrl }]);
+        .insert([{ ...form, images: imageUrls }]);
       if (error) {
         setStatus("Erreur lors de l'ajout");
       } else {
         setStatus('Ajouté !');
-        setForm({ title: '', content: '', image: '' });
-        setImageFile(null);
-        setImagePreview(null);
+        setForm({ title: '', content: '' });
+        setImageFiles([]);
+        setImagePreviews([]);
         if (onAdd) onAdd();
       }
     } catch (err) {
@@ -81,9 +79,17 @@ const AddNews = ({ onAdd }) => {
       <input
         type="file"
         accept="image/*"
+        multiple
+        name="images"
         onChange={handleImageChange}
       /><br />
-      {imagePreview && <img src={imagePreview} alt="Aperçu" style={{maxWidth: 200}} />}<br />
+      {imageFiles.length > 0 && (
+        <div style={{display: 'flex', gap: 10, margin: '10px 0'}}>
+          {imageFiles.map((file, idx) => (
+            <img key={idx} src={URL.createObjectURL(file)} alt="Aperçu" style={{maxWidth: 120, borderRadius: 8}} />
+          ))}
+        </div>
+      )}
       <button type="submit">Ajouter</button>
       {status && <div>{status}</div>}
     </form>
