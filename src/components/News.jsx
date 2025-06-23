@@ -45,7 +45,7 @@ function News() {
               <div className="news-content">
                 <span className="news-date">{item.date}</span>
                 <h3 className="news-card-title">{item.title}</h3>
-                <p className="news-excerpt">{item.excerpt}</p>
+                <p className="news-excerpt">{item.content}</p>
                 <button 
                   className="news-read-more"
                   onClick={() => handleReadMore(item)}
