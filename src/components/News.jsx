@@ -37,17 +37,17 @@ function News() {
           <p className="news-subtitle">Restez informé des dernières nouvelles de SERVAGRI</p>
         </div>
         <div className="news-grid">
-          {news.map((item) => (
-            <article className="news-card" key={item.id}>
-              <div className="news-image-container">
-                <img src={item.image_url} alt={item.title} className="news-image" />
+          {news.map((item, idx) => (
+            <article className="realisation-card-pro" key={item.id}>
+              <div className="realisation-image-container-pro">
+                {/* Pas d'icône ni de badge pour l'actualité, mais tu peux en ajouter ici si besoin */}
+                <img src={item.image_url} alt={item.title} className="realisation-image-pro" />
               </div>
-              <div className="news-content">
-                <span className="news-date">{item.date}</span>
-                <h3 className="news-card-title">{item.title}</h3>
-                <p className="news-excerpt">{item.content}</p>
+              <div className="realisation-content-pro">
+                <h3 className="realisation-card-title-pro">{item.title}</h3>
+                <p className="realisation-excerpt-pro">{item.content}</p>
                 <button 
-                  className="news-read-more"
+                  className="realisation-read-more-pro"
                   onClick={() => handleReadMore(item)}
                 >
                   Lire la suite
