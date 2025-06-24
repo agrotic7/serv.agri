@@ -3,6 +3,7 @@ import { useNavigate, Outlet, Link } from 'react-router-dom';
 import './Admin.css';
 import { motion } from 'framer-motion';
 import { supabase } from '../supabaseClient';
+import AdminSidebar from '../components/AdminSidebar';
 
 const CATEGORIES = [
   'Innovation',
@@ -492,27 +493,21 @@ function Admin() {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.5 }}
-      className="admin-container"
-    >
-      <div className="admin-header">
-        <h1>Tableau de bord Admin</h1>
-        <button onClick={handleLogout} className="logout-btn">Déconnexion</button>
-      </div>
-
-      <nav className="admin-sub-nav">
-        <Link to="news" className="admin-sub-nav-link">Administration des Actualités</Link>
-        <Link to="realisations" className="admin-sub-nav-link">Administration des Réalisations</Link>
-      </nav>
-
-      <div className="admin-content">
-        <Outlet />
-      </div>
-    </motion.div>
+    <div style={{ display: 'flex', minHeight: '100vh' }}>
+      <AdminSidebar />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 0.5 }}
+        className="admin-container"
+        style={{ flex: 1, marginLeft: 220, padding: '32px 16px 16px 16px', minHeight: '100vh' }}
+      >
+        <div className="admin-content">
+          <Outlet />
+        </div>
+      </motion.div>
+    </div>
   );
 }
 

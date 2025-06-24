@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import './Admin.css';
+import { motion } from 'framer-motion';
 
 const STATUS = [
   { value: 'draft', label: 'Brouillon' },
@@ -255,19 +256,6 @@ function AdminRealisations() {
           )}
         </div>
       )}
-      {/* Modal de confirmation de suppression */}
-      {showDeleteModal && (
-        <div style={{position:'fixed',top:0,left:0,width:'100vw',height:'100vh',background:'rgba(0,0,0,0.25)',zIndex:10001,display:'flex',alignItems:'center',justifyContent:'center'}}>
-          <div style={{background:'#fff',borderRadius:16,padding:'32px 40px',boxShadow:'0 8px 32px rgba(0,0,0,0.18)',textAlign:'center',minWidth:320}}>
-            <div style={{fontSize:22,fontWeight:700,marginBottom:18}}>Confirmer la suppression</div>
-            <div style={{fontSize:16,marginBottom:28}}>Voulez-vous vraiment supprimer cette réalisation ? Cette action est <b>irréversible</b>.</div>
-            <div style={{display:'flex',gap:18,justifyContent:'center'}}>
-              <button onClick={confirmDelete} style={{background:'#dc3545',color:'#fff',padding:'10px 28px',borderRadius:8,fontWeight:600,border:'none',fontSize:16,cursor:'pointer'}}>Supprimer</button>
-              <button onClick={cancelDelete} style={{background:'#f0f0f0',color:'#333',padding:'10px 28px',borderRadius:8,fontWeight:600,border:'none',fontSize:16,cursor:'pointer'}}>Annuler</button>
-            </div>
-          </div>
-        </div>
-      )}
       <div className="admin-form">
         <div className="form-header">
           <h2>{editingId ? 'Modifier la réalisation' : 'Ajouter une nouvelle réalisation'}</h2>
@@ -285,7 +273,6 @@ function AdminRealisations() {
           </div>
         </div>
         <form onSubmit={handleSubmit} className="form-grid">
-          {errorMsg && <div style={{color:'red',marginBottom:10}}>{errorMsg}</div>}
           <div className="form-main">
             <div className="form-group">
               <label htmlFor="real-title">Titre de la réalisation <span className="required">*</span></label>
@@ -296,12 +283,12 @@ function AdminRealisations() {
               <input type="date" id="real-date" name="date" value={formData.date} onChange={handleInputChange} required />
             </div>
             <div className="form-group">
-              <label htmlFor="real-description">Description <span className="required">*</span></label>
-              <textarea id="real-description" name="description" value={formData.description} onChange={handleInputChange} required rows="3"></textarea>
-            </div>
-            <div className="form-group">
               <label htmlFor="real-excerpt">Extrait <span className="required">*</span></label>
               <textarea id="real-excerpt" name="excerpt" value={formData.excerpt} onChange={handleInputChange} required rows="3"></textarea>
+            </div>
+            <div className="form-group">
+              <label htmlFor="real-description">Description <span className="required">*</span></label>
+              <textarea id="real-description" name="description" value={formData.description} onChange={handleInputChange} required rows="3"></textarea>
             </div>
             <div className="form-group">
               <label htmlFor="real-fullContent">Contenu complet <span className="required">*</span></label>
@@ -340,7 +327,7 @@ function AdminRealisations() {
           </div>
         </form>
       </div>
-
+      {/* Liste identique à actualités */}
       <div className="admin-list">
         <h3>Liste des Réalisations</h3>
         <div className="filter-buttons" style={{ marginBottom: '20px', justifyContent: 'flex-end' }}>
@@ -363,35 +350,36 @@ function AdminRealisations() {
           <div style={{ textAlign: 'right' }}>Actions</div>
         </div>
         {filteredRealisations.length === 0 ? (
-          <div className="no-items" style={{textAlign:'center',padding:'60px 0',color:'#aaa',fontSize:18}}>
-            <svg width="60" height="60" fill="none" viewBox="0 0 60 60" style={{marginBottom:18}}><circle cx="30" cy="30" r="28" fill="#f5f5f5" stroke="#e0e0e0" strokeWidth="2"/><path d="M20 38c2-2 6-6 10-6s8 4 10 6" stroke="#bdbdbd" strokeWidth="2" strokeLinecap="round"/><circle cx="24" cy="26" r="2" fill="#bdbdbd"/><circle cx="36" cy="26" r="2" fill="#bdbdbd"/></svg>
-            Aucune réalisation pour le moment.<br/>Ajoutez-en une pour commencer !
-          </div>
+          <p className="no-items">Aucune réalisation trouvée.</p>
         ) : (
-          filteredRealisations.map(item => (
-            <div key={item.id} className="list-item">
+          filteredRealisations.map((item, idx) => (
+            <motion.div
+              key={item.id}
+              className="list-item"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: idx * 0.08 }}
+            >
               <div className="item-image">
-                {item.image_url && <img src={item.image_url} alt={item.title} />}
+                {item.image && <img src={item.image} alt={item.title} />}
               </div>
               <div className="item-title">{item.title}</div>
               <div className="item-date">{item.date}</div>
               <div className="item-status">
-                {item.status === 'published' ? (
-                  <span style={{background:'#eaffea',color:'#207c2f',padding:'6px 18px',borderRadius:16,fontWeight:700,fontSize:14,boxShadow:'0 2px 8px rgba(46,125,50,0.06)'}}>Publié</span>
-                ) : (
-                  <span style={{background:'#fffbe6',color:'#bfa100',padding:'6px 18px',borderRadius:16,fontWeight:700,fontSize:14,boxShadow:'0 2px 8px rgba(191,161,0,0.06)'}}>Brouillon</span>
-                )}
+                <span className={item.status === 'published' ? 'status-published' : 'status-draft'}>
+                  {item.status === 'published' ? 'Publié' : 'Brouillon'}
+                </span>
               </div>
               <div className="item-actions">
-                <button onClick={() => handleEdit(item)} className="edit-btn" aria-label="Modifier la réalisation">Modifier</button>
+                <button onClick={() => handleEdit(item)} className="edit-btn">Modifier</button>
                 {item.status === 'draft' ? (
-                  <button onClick={() => handleStatusChange(item.id, 'published')} className="publish-btn" aria-label="Publier la réalisation">Publier</button>
+                  <button onClick={() => handleStatusChange(item.id, 'published')} className="publish-btn">Publier</button>
                 ) : (
-                  <button onClick={() => handleStatusChange(item.id, 'draft')} className="unpublish-btn" aria-label="Dépublier la réalisation">Dépublier</button>
+                  <button onClick={() => handleStatusChange(item.id, 'draft')} className="unpublish-btn">Dépublier</button>
                 )}
-                <button onClick={() => handleDelete(item.id)} className="delete-btn" aria-label="Supprimer la réalisation">Supprimer</button>
+                <button onClick={() => handleDelete(item.id)} className="delete-btn">Supprimer</button>
               </div>
-            </div>
+            </motion.div>
           ))
         )}
       </div>

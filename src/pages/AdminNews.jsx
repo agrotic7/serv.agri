@@ -343,7 +343,7 @@ function AdminNews() {
               transition={{ duration: 0.5, delay: idx * 0.08 }}
             >
               <div className="item-image">
-                {item.image && <img src={item.image} alt={item.title} />}
+                {(item.image_url || item.image) && <img src={item.image_url || item.image} alt={item.title} />}
               </div>
               <div className="item-title">{item.title}</div>
               <div className="item-date">{item.date}</div>

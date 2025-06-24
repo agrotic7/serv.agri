@@ -1,74 +1,232 @@
-.login-container {
+.login-bg-illustration {
+  position: relative;
+  min-height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: #e6f4ee;
+}
+
+.login-bg-blur {
+  position: fixed;
+  z-index: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('/servagri_irrigation.png') center center/cover no-repeat;
+  filter: blur(10px) brightness(0.7) grayscale(0.1);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.login-outer-container {
+  position: relative;
+  z-index: 2;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #1a3c2b 0%, #4bbf73 100%);
-  padding: 20px;
+  background: none;
+  padding: 0;
 }
 
-.login-box {
-  background: white;
-  padding: 40px;
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+.login-container {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  padding: 0;
+}
+
+.login-halo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 340px;
+  height: 340px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, #4bbf7360 0%, #e6f4ee00 70%);
+  filter: blur(32px);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.glass-effect {
+  position: relative;
+  z-index: 2;
+  background: rgba(255,255,255,0.96);
+  box-shadow: 0 8px 32px 0 #4bbf7340, 0 2px 8px rgba(0,0,0,0.08);
+  border-radius: 18px;
+  backdrop-filter: blur(12px);
+  border: 2px solid #4bbf7340;
+  padding: 32px 12px 20px 12px;
+  max-width: 340px;
   width: 100%;
-  max-width: 400px;
+  margin-bottom: 18px;
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.glass-effect:hover {
+  box-shadow: 0 0 0 4px #4bbf7320, 0 16px 40px #4bbf7315, 0 2px 8px rgba(0,0,0,0.10);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.login-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.login-avatar:hover {
+  transform: scale(1.07) rotate(-2deg);
+  box-shadow: 0 2px 12px #4bbf7340;
+}
+.login-avatar svg {
+  width: 44px;
+  height: 44px;
+}
+
+.login-logo {
+  display: block;
+  margin: 0 auto 12px auto;
+  max-width: 70px;
+  height: auto;
 }
 
 .login-box h1 {
   color: #1a3c2b;
-  font-size: 1.8rem;
-  margin-bottom: 32px;
+  font-size: 1.15rem;
+  margin-bottom: 6px;
   text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.login-subtitle {
+  color: #4bbf73;
+  text-align: center;
+  font-size: 0.98rem;
+  margin-bottom: 6px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+}
+
+.login-welcome {
+  color: #1a3c2b;
+  text-align: center;
+  font-size: 0.93rem;
+  margin-bottom: 14px;
+  font-weight: 400;
+  letter-spacing: 0.1px;
+}
+.login-welcome .brand {
+  color: #4bbf73;
+  font-weight: 600;
 }
 
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 14px;
 }
 
-.form-group {
+.form-group.with-icon {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  align-items: center;
 }
 
-.form-group label {
-  color: #1a3c2b;
-  font-weight: 500;
-  font-size: 0.95rem;
+.input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.form-group.with-icon input {
+  padding-left: 38px;
+  font-size: 0.98rem;
 }
 
 .form-group input {
-  padding: 12px;
+  padding: 10px;
   border: 2px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
+  border-radius: 7px;
+  font-size: 0.98rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  background: #f8fafc;
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: #4bbf73;
+  border-color: #e6c77a;
+  box-shadow: 0 0 0 2px #e6c77a40;
 }
 
 .login-btn {
-  background: #4bbf73;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(90deg, #4bbf73 60%, #1a3c2b 100%);
   color: white;
   border: none;
-  padding: 12px;
-  border-radius: 8px;
+  padding: 10px;
+  border-radius: 7px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 12px;
+  transition: background 0.3s, box-shadow 0.3s, transform 0.1s;
+  margin-top: 8px;
+  box-shadow: 0 2px 8px rgba(75,191,115,0.08);
+  position: relative;
+  overflow: hidden;
 }
 
-.login-btn:hover {
-  background: #3da862;
+.btn-icon {
+  display: flex;
+  align-items: center;
+  margin-right: 2px;
+}
+
+.btn-icon svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s;
+}
+
+.login-btn:hover .btn-icon svg {
+  transform: rotate(20deg) scale(1.1);
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+.login-links {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: -10px;
+}
+
+.forgot-link {
+  color: #4bbf73;
+  font-size: 0.97rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.forgot-link:hover {
+  color: #1a3c2b;
+  text-decoration: underline;
 }
 
 .error-message {
@@ -76,16 +234,76 @@
   color: #dc2626;
   padding: 12px;
   border-radius: 8px;
-  font-size: 0.9rem;
+  font-size: 0.97rem;
   text-align: center;
+  margin-bottom: 2px;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.shake {
+  animation: shake 0.6s cubic-bezier(.36,.07,.19,.97) both;
+}
+@keyframes shake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(4px); }
+  30%, 50%, 70% { transform: translateX(-8px); }
+  40%, 60% { transform: translateX(8px); }
+}
+
+.login-footer {
+  text-align: center;
+  color: #1a3c2b;
+  font-size: 0.93rem;
+  opacity: 0.7;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.login-badge {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-3deg);
+  background: linear-gradient(90deg, #4bbf73 60%, #e6c77a 100%);
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 4px 18px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #4bbf7320;
+  letter-spacing: 1px;
+  border: 1.5px solid #e6c77a;
+  z-index: 3;
+  text-shadow: 0 1px 2px #1a3c2b22;
 }
 
 @media (max-width: 480px) {
-  .login-box {
-    padding: 24px;
+  .glass-effect {
+    padding: 14px 2vw 10px 2vw;
+    max-width: 99vw;
   }
-  
+  .login-logo {
+    max-width: 48px;
+  }
+  .login-avatar svg {
+    width: 32px;
+    height: 32px;
+  }
   .login-box h1 {
-    font-size: 1.5rem;
+    font-size: 0.98rem;
+  }
+  .login-subtitle {
+    font-size: 0.89rem;
+  }
+  .login-welcome {
+    font-size: 0.85rem;
+  }
+  .login-footer {
+    font-size: 0.85rem;
   }
 } 

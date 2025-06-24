@@ -19,6 +19,7 @@ import Login from './pages/Login';
 import Admin from './pages/Admin';
 import AdminNews from './pages/AdminNews';
 import AdminRealisations from './pages/AdminRealisations';
+import DashboardAdmin from './pages/DashboardAdmin';
 import ProtectedRoute from './components/ProtectedRoute';
 
 const router = createBrowserRouter([
@@ -39,7 +40,7 @@ const router = createBrowserRouter([
         path: "/admin",
         element: <ProtectedRoute><Admin /></ProtectedRoute>,
         children: [
-          { index: true, element: <AdminNews /> }, // Default child route
+          { index: true, element: <DashboardAdmin /> },
           { path: "news", element: <AdminNews /> },
           { path: "realisations", element: <AdminRealisations /> },
         ],
