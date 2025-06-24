@@ -29,7 +29,7 @@ function HeroPro() {
         muted
         playsInline
         preload="auto"
-        poster="/servagri_logo.png"
+        poster="/servagri.png"
         className="hero-video-bg"
       >
         <source src="/Vidéo_Irrigation_Automatique_Prête.webm" type="video/webm" />
