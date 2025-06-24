@@ -53,22 +53,21 @@ function Realisation() {
         <div className="realisation-grid">
           {realisations.map((item, idx) => (
             <article
-              className="realisation-card"
+              className="realisation-card-pro"
               key={item.id}
             >
-              <div className="realisation-image-container">
+              <div className="realisation-image-container-pro">
                 <img 
                   src={item.image} 
                   alt={item.title} 
-                  className="realisation-image" 
+                  className="realisation-image-pro" 
                 />
               </div>
-              <div className="realisation-content">
-                <span className="realisation-date">{item.date}</span>
-                <h3 className="realisation-card-title">{item.title}</h3>
-                <p className="realisation-excerpt">{item.description}</p>
+              <div className="realisation-content-pro">
+                <h3 className="realisation-card-title-pro">{item.title}</h3>
+                <p className="realisation-excerpt-pro">{item.description}</p>
                 <button 
-                  className="realisation-read-more"
+                  className="realisation-read-more-pro"
                   onClick={() => handleReadMore(item)}
                 >
                   Voir le projet

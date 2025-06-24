@@ -6,7 +6,7 @@ import ChiffresCles from '../components/ChiffresCles';
 // import ServicesOverview from '../components/ServicesOverview';
 // import Testimonials from '../components/Testimonials';
 // import CallToAction from '../components/CallToAction';
-import News from '../components/News';
+import NewsSection from '../components/NewsSection';
 import LatestRealisations from '../components/LatestRealisations';
 
 export default function Home() {
@@ -20,7 +20,7 @@ export default function Home() {
       {/* <Testimonials /> */}
       {/* <CallToAction /> */}
       <LatestRealisations />
-      <News />
+      <NewsSection />
     </div>
   );
 } 

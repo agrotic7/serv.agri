@@ -6,6 +6,7 @@ import { FiAward } from 'react-icons/fi';
 import './News.css'; // <-- Utiliser directement le CSS des actualités
 import './Realisation.css'; // Garder pour le style des cartes
 import './Atouts.css'; // Importer les styles pour les titres
+import './LatestRealisations.css'; // J'ajoute un fichier CSS dédié pour le style horizontal
 
 function ImageCarousel({ images = [] }) {
   const [current, setCurrent] = useState(0);
@@ -27,6 +28,29 @@ function ImageCarousel({ images = [] }) {
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+function RealisationCardHorizontal({ item, onReadMore }) {
+  // Image à gauche, texte à droite, bande verticale à gauche de l'image
+  return (
+    <div className="realisation-horizontal-card">
+      <div className="realisation-horizontal-img-wrap">
+        {(item.country || item.year) && (
+          <div className="realisation-horizontal-label-vertical left">
+            {item.country && <span className="label-country">{item.country}</span>}
+            {item.year && <span className="label-year">{item.year}</span>}
+          </div>
+        )}
+        <img src={item.images && item.images.length > 0 ? item.images[0] : item.image} alt={item.title} className="realisation-horizontal-img" />
+      </div>
+      <div className="realisation-horizontal-text">
+        <button className="realisation-horizontal-title-btn" onClick={() => onReadMore(item)}>
+          <h3 className="realisation-horizontal-title">{item.title}</h3>
+        </button>
+        <p className="realisation-horizontal-desc">{item.description}</p>
+      </div>
     </div>
   );
 }
@@ -56,37 +80,22 @@ function LatestRealisations() {
   };
 
   return (
-    <div className="news-section"> {/* <-- Utiliser la classe de la section actualités */}
-      <div className="news-header"> {/* <-- Utiliser la classe du header actualités */}
+    <div className="news-section">
+      <div className="news-header">
         <h2 className="news-title">Nos Dernières Réalisations</h2>
         <p className="news-subtitle">Découvrez un aperçu de nos projets les plus récents.</p>
       </div>
-      <div className="realisation-grid">
+      <div className="realisation-horizontal-list">
         {realisations.map((item, idx) => (
-          <motion.article
-            className="realisation-card-pro"
+          <motion.div
             key={item.id}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.5, delay: idx * 0.12 }}
           >
-            <div className="realisation-image-container-pro">
-              <div className="realisation-icon-pro"><FiAward /></div>
-              {idx === 0 && <span className="realisation-badge-nouveau">Nouveau</span>}
-              <ImageCarousel images={item.images || (item.image ? [item.image] : [])} />
-            </div>
-            <div className="realisation-content-pro">
-              <h3 className="realisation-card-title-pro">{item.title}</h3>
-              <p className="realisation-excerpt-pro">{item.description}</p>
-              <button 
-                className="realisation-read-more-pro"
-                onClick={() => handleReadMore(item)}
-              >
-                Voir le projet
-              </button>
-            </div>
-          </motion.article>
+            <RealisationCardHorizontal item={item} onReadMore={handleReadMore} />
+          </motion.div>
         ))}
       </div>
     </div>

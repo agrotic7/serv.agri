@@ -24,13 +24,18 @@ function HeroPro() {
     <section className="hero-pro-section">
       <video
         ref={videoRef}
-        autoPlay 
-        loop 
-        muted 
+        autoPlay
+        loop
+        muted
         playsInline
-        src="/Vidéo_Irrigation_Automatique_Prête.mp4"
+        preload="auto"
+        poster="/servagri.png"
         className="hero-video-bg"
-      />
+      >
+        <source src="/Vidéo_Irrigation_Automatique_Prête.webm" type="video/webm" />
+        <source src="/Vidéo_Irrigation_Automatique_Prête.mp4" type="video/mp4" />
+        Votre navigateur ne supporte pas la vidéo HTML5.
+      </video>
       
       <motion.div
         className="hero-pro-content"

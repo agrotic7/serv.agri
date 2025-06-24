@@ -36,7 +36,8 @@ const services = [
     icon: <FiUsers />, badge: "Assistance 24h/24 et 7j/7", badgeClass: "badge-red",
     title: "Support et Accompagnement Personnalisé",
     desc: "Une équipe d'experts à votre écoute, offrant un support technique réactif et des conseils agronomiques sur mesure, du diagnostic à la maintenance.",
-    img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80"
+    img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80",
+    video: "/Support et Accompagnement Personnalisé.mp4"
   },
   {
     icon: <FiCpu />, badge: "Innovation", badgeClass: "badge-purple",
@@ -50,7 +51,8 @@ const services = [
     title: "Formations et Ateliers Pratiques",
     desc: "Formations sur l'utilisation de nos systèmes et les meilleures pratiques agronomiques, pour une autonomie complète de vos équipes.",
     img: "https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=400&q=80",
-    isNew: true
+    isNew: true,
+    video: "/Formations et Ateliers Pratiques.mp4"
   },
 ];
 const avantages = [
@@ -166,13 +168,17 @@ export default function Services() {
                 {s.video ? (
                   <video
                     className="service-video-refonte"
-                    src={s.video}
+                    preload="auto"
                     autoPlay
                     loop
                     muted
                     playsInline
                     poster={s.img}
-                  />
+                  >
+                    <source src={s.video.replace('.mp4', '.webm')} type="video/webm" />
+                    <source src={s.video} type="video/mp4" />
+                    Votre navigateur ne supporte pas la vidéo HTML5.
+                  </video>
                 ) : (
                   <img src={s.img} alt={s.title} />
                 )}
