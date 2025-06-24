@@ -420,7 +420,7 @@
     font-size: 1rem;
     min-height: calc(1.5em * 5);
   }
-}
+} 
 
 .news-filters-bar {
   display: flex;

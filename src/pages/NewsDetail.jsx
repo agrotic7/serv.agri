@@ -303,13 +303,13 @@ function NewsDetail() {
         <meta name="twitter:description" content={news.excerpt || news.content?.slice(0, 160)} />
         <meta name="twitter:image" content={news.image_url} />
       </Helmet>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.5 }}
-        className="news-detail-container"
-      >
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.5 }}
+      className="news-detail-container"
+    >
         {/* Fil d'Ariane */}
         <nav className="breadcrumb">
           <span className="breadcrumb-link" onClick={() => navigate('/')}>Accueil</span>
@@ -319,49 +319,49 @@ function NewsDetail() {
           <span className="breadcrumb-current">{news.title}</span>
         </nav>
 
-        <div className="news-detail-header">
-          <button onClick={() => navigate('/actualites')} className="back-button">
-            ← Retour aux actualités
-          </button>
-        </div>
+      <div className="news-detail-header">
+        <button onClick={() => navigate('/actualites')} className="back-button">
+          ← Retour aux actualités
+        </button>
+      </div>
 
-        <article className="news-detail">
+      <article className="news-detail">
           <motion.div 
             className="news-detail-image-container"
             whileHover={{ scale: 1.03 }}
             transition={{ type: 'spring', stiffness: 200 }}
           >
-            <img src={news.image_url} alt={news.title} className="news-detail-image" />
+          <img src={news.image_url} alt={news.title} className="news-detail-image" />
           </motion.div>
 
-          <div className="news-detail-content">
+        <div className="news-detail-content">
             <div className="news-detail-meta">
               <img src={AUTHOR.avatar} alt={AUTHOR.name} className="news-detail-author-avatar" />
               <div>
                 <span className="news-detail-author">{AUTHOR.name}</span>
-                <span className="news-detail-date">{news.date}</span>
+          <span className="news-detail-date">{news.date}</span>
               </div>
             </div>
 
-            <h1 className="news-detail-title">{news.title}</h1>
+          <h1 className="news-detail-title">{news.title}</h1>
             <div className="news-detail-views">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{verticalAlign:'middle',marginRight:4}}><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
               {news.views || 0} vues
             </div>
-            <div className="news-detail-excerpt">{news.excerpt}</div>
+          <div className="news-detail-excerpt">{news.excerpt}</div>
 
             <hr className="news-detail-separator" />
 
-            <div className="news-detail-full-content">
-              {news.content}
-            </div>
+          <div className="news-detail-full-content">
+            {news.content}
+          </div>
 
-            {news.category && (
-              <div className="news-detail-category">
-                <span className="category-label">Catégorie :</span>
-                <span className="category-value">{news.category}</span>
-              </div>
-            )}
+          {news.category && (
+            <div className="news-detail-category">
+              <span className="category-label">Catégorie :</span>
+              <span className="category-value">{news.category}</span>
+            </div>
+          )}
 
             {/* Affichage des tags si présents */}
             {news.tags && Array.isArray(news.tags) && news.tags.length > 0 && (
@@ -387,8 +387,8 @@ function NewsDetail() {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M22.23 0H1.77C.792 0 0 .771 0 1.723v20.549C0 23.229.792 24 1.77 24h20.459C23.208 24 24 23.229 24 22.271V1.723C24 .771 23.208 0 22.23 0zM7.12 20.452H3.56V9h3.56v11.452zM5.34 7.633a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM20.452 20.452h-3.554v-5.569c0-1.328-.025-3.037-1.85-3.037-1.85 0-2.132 1.445-2.132 2.939v5.667h-3.554V9h3.414v1.561h.049c.476-.899 1.637-1.85 3.37-1.85 3.602 0 4.267 2.37 4.267 5.455v6.286z"/></svg>
               </button>
             </div>
-          </div>
-        </article>
+        </div>
+      </article>
 
         {/* Section commentaires interactive */}
         <section className="news-comments-section">
@@ -543,7 +543,7 @@ function NewsDetail() {
             </div>
           </section>
         )}
-      </motion.div>
+    </motion.div>
     </>
   );
 }

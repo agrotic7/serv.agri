@@ -1582,6 +1582,10 @@
   color: #fff !important;
   text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
 }
+.hero-content-block h1,
+.hero-content-block p {
+  text-align: center;
+}
 @media (max-width: 700px) {
   .hero-video-bg-block, .hero-overlay-gradient {
     border-radius: 0 0 18px 18px;

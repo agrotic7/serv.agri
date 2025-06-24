@@ -128,17 +128,16 @@ export default function Services() {
     <div className="services-page">
       {/* HERO avec vidéo de fond, overlay et animation */}
       <section className="services-hero-refonte">
-        <div className="hero-video-bg-block">
-          <video
-            className="hero-video-bg"
-            autoPlay
-            loop
-            muted
-            playsInline
-            src="/Vidéo_Irrigation_Automatique_Prête.mp4"
-            poster="/servagri.png"
+        <div className="video-banner-container">
+          <img 
+            src="/Vidéo_Irrigation_Automatique_Prête.gif" 
+            alt="Animation d'un système d'irrigation automatisé"
+            className="realisation-hero-video"
           />
-          <div className="hero-overlay-gradient"></div>
+          <div className="video-banner-overlay">
+            <h2>L'innovation au cœur de notre métier</h2>
+            <p>Découvrez comment nous mettons la technologie au service d'une agriculture plus performante et durable.</p>
+          </div>
         </div>
         <motion.div className="hero-content-block" initial={{ opacity: 0, x: 60 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1, delay: 0.3 }}>
           <h1>Des services <span className="hero-highlight">innovants</span> pour une agriculture performante</h1>

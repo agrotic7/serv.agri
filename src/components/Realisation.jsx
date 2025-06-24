@@ -35,18 +35,14 @@ function Realisation() {
   return (
     <div className="realisation-section-container">
       <section className="realisation-hero">
-        <video 
-            ref={videoRef}
-            className="realisation-hero-video" 
-            autoPlay 
-            loop 
-            muted 
-            playsInline
-            src="/Vidéo_Irrigation_Automatique_Prête.mp4"
+        <img 
+          className="realisation-hero-video" 
+          src="/Vidéo_Irrigation_Automatique_Prête.gif"
+          alt="Animation d'un système d'irrigation automatisé"
         />
         <div className="realisation-hero-content">
           <h1>Nos Réalisations</h1>
-          <p>Découvrez nos projets réussis et l'impact de nos solutions.</p>
+          <p>De la conception à la mise en œuvre, découvrez comment nous transformons les défis agricoles en succès.</p>
         </div>
       </section>
       <section className="realisation-section">

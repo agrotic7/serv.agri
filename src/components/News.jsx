@@ -51,13 +51,10 @@ function News() {
     >
       <div className="realisation-section-container">
         <section className="realisation-hero">
-          <video 
-            className="realisation-hero-video" 
-            autoPlay 
-            loop 
-            muted 
-            playsInline
-            src="/Vidéo_Irrigation_Automatique_Prête.mp4"
+          <img 
+            className="realisation-hero-video"
+            src="/Vidéo_Irrigation_Automatique_Prête.gif"
+            alt="Animation d'un système d'irrigation automatisé"
           />
           <div className="realisation-hero-content">
             <h1>Nos Actualités</h1>
@@ -76,8 +73,6 @@ function News() {
             >
               Voir les actualités
             </button>
-            <div className="hero-stats">
-            </div>
           </div>
         </section>
         <section className="news-section" style={{paddingTop: '3rem'}}>
