@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import { motion } from 'framer-motion';
+import { supabase } from '../supabaseClient';
 
 function Login() {
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
-    username: '',
+    email: '',
     password: ''
   });
   const [error, setError] = useState('');
+  const [loadingSession, setLoadingSession] = useState(true);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -19,18 +21,44 @@ function Login() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Vérification simple des identifiants
-    // Dans un vrai projet, il faudrait utiliser une API sécurisée
-    if (credentials.username === 'admin' && credentials.password === 'servagri2024') {
-      localStorage.setItem('isAuthenticated', 'true');
-      navigate('/admin');
-    } else {
-      setError('Identifiants incorrects');
+    setError('');
+    const { email, password } = credentials;
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      setError('Identifiants incorrects ou compte inexistant.');
     }
+    // La redirection se fera automatiquement via useEffect si la session est active
   };
+
+  useEffect(() => {
+    let isMounted = true;
+    setLoadingSession(true);
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (isMounted) {
+        if (session) {
+          navigate('/admin');
+        }
+        setLoadingSession(false);
+      }
+    });
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (isMounted) {
+        if (session) {
+          navigate('/admin');
+        }
+      }
+    });
+    return () => {
+      isMounted = false;
+      listener?.subscription.unsubscribe();
+    };
+  }, [navigate]);
+
+  if (loadingSession) {
+    return <div style={{textAlign:'center', marginTop:'4rem'}}>Chargement...</div>;
+  }
 
   return (
     <motion.div
@@ -46,12 +74,12 @@ function Login() {
           {error && <div className="error-message">{error}</div>}
           
           <div className="form-group">
-            <label htmlFor="username">Nom d'utilisateur</label>
+            <label htmlFor="email">Email</label>
             <input
-              type="text"
-              id="username"
-              name="username"
-              value={credentials.username}
+              type="email"
+              id="email"
+              name="email"
+              value={credentials.email}
               onChange={handleInputChange}
               required
             />

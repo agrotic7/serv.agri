@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Outlet, Link } from 'react-router-dom';
 import './Admin.css';
 import { motion } from 'framer-motion';
+import { supabase } from '../supabaseClient';
 
 const CATEGORIES = [
   'Innovation',
@@ -42,6 +43,8 @@ function Admin() {
   const [realisationSearchTerm, setRealisationSearchTerm] = useState('');
   const [imagePreview, setImagePreview] = useState(null);
   const [imageRealisationPreviews, setImageRealisationPreviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
   const uploadImage = async (file) => {
     // Cette fonction simule l'upload d'image vers un backend.
@@ -449,6 +452,44 @@ function Admin() {
     }));
     setImageRealisationPreviews(prev => prev.filter((_, i) => i !== index));
   };
+
+  useEffect(() => {
+    let isMounted = true;
+    setLoading(true);
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!isMounted) return;
+      if (!session) {
+        setLoading(false);
+        if (window.location.pathname !== '/login') {
+          navigate('/login');
+        }
+      } else {
+        setUser(session.user);
+        setLoading(false);
+      }
+    });
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!isMounted) return;
+      if (!session) {
+        setUser(null);
+        setLoading(false);
+        if (window.location.pathname !== '/login') {
+          navigate('/login');
+        }
+      } else {
+        setUser(session.user);
+        setLoading(false);
+      }
+    });
+    return () => {
+      isMounted = false;
+      listener?.subscription.unsubscribe();
+    };
+  }, [navigate]);
+
+  if (loading) {
+    return <div style={{textAlign:'center', marginTop:'4rem'}}>Chargement...</div>;
+  }
 
   return (
     <motion.div
