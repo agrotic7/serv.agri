@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import './Admin.css';
 import { motion } from 'framer-motion';
+import { Editor } from '@tinymce/tinymce-react';
 
 const CATEGORIES = [
   'Innovation',
@@ -266,7 +267,27 @@ function AdminNews() {
             </div>
             <div className="form-group">
               <label htmlFor="news-content">Contenu complet <span className="required">*</span></label>
-              <textarea id="news-content" name="content" value={formData.content} onChange={handleInputChange} required rows="10" className="content-editor"></textarea>
+              <Editor
+                id="news-content"
+                tinymceScriptSrc="/tinymce/tinymce.min.js"
+                value={formData.content}
+                init={{
+                  height: 500,
+                  width: '100%',
+                  menubar: 'file edit view insert format tools table help',
+                  plugins: [
+                    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview', 'anchor',
+                    'searchreplace', 'visualblocks', 'code', 'fullscreen', 'insertdatetime', 'media',
+                    'table', 'paste', 'help', 'wordcount'
+                  ],
+                  toolbar:
+                    'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media table | removeformat | code fullscreen preview | help',
+                  language: 'fr_FR',
+                  language_url: '/tinymce/langs/fr_FR.js',
+                  content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+                }}
+                onEditorChange={content => setFormData(prev => ({ ...prev, content }))}
+              />
             </div>
             <div className="form-group">
               <label htmlFor="news-category">Catégorie <span className="required">*</span></label>

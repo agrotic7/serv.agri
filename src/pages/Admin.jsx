@@ -4,6 +4,7 @@ import './Admin.css';
 import { motion } from 'framer-motion';
 import { supabase } from '../supabaseClient';
 import AdminSidebar from '../components/AdminSidebar';
+import AdminSolutions from './AdminSolutions';
 
 const CATEGORIES = [
   'Innovation',

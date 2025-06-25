@@ -51,10 +51,14 @@ function News() {
     >
       <div className="realisation-section-container">
         <section className="realisation-hero">
-          <img 
+          <video
             className="realisation-hero-video"
-            src="/Vidéo_Irrigation_Automatique_Prête.gif"
-            alt="Animation d'un système d'irrigation automatisé"
+            src="/Vidéo_Irrigation_Automatique_Prête.mp4"
+            poster="/Poster.png"
+            autoPlay
+            loop
+            muted
+            playsInline
           />
           <div className="realisation-hero-content">
             <h1>Nos Actualités</h1>
@@ -111,7 +115,7 @@ function News() {
                 </div>
                 <div className="realisation-content-pro">
                   <h3 className="realisation-card-title-pro">{item.title}</h3>
-                  <p className="realisation-excerpt-pro">{item.content}</p>
+                  <div className="realisation-excerpt-pro" dangerouslySetInnerHTML={{ __html: item.content }} />
                   <button 
                     className="realisation-read-more-pro"
                     onClick={() => handleReadMore(item)}

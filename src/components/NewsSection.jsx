@@ -36,7 +36,7 @@ function NewsSection() {
             </div>
             <div className="realisation-content-pro">
               <h3 className="realisation-card-title-pro">{item.title}</h3>
-              <p className="realisation-excerpt-pro">{item.content}</p>
+              <div className="realisation-excerpt-pro" dangerouslySetInnerHTML={{ __html: item.content }} />
               <button 
                 className="realisation-read-more-pro"
                 onClick={() => handleReadMore(item)}

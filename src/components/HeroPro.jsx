@@ -23,10 +23,14 @@ function HeroPro() {
   return (
     <div className="realisation-section-container">
       <section className="realisation-hero">
-        <img 
-          className="realisation-hero-video" 
-          src="/Vidéo_Irrigation_Automatique_Prête.gif"
-          alt="Animation d'un système d'irrigation automatisé"
+        <video
+          className="realisation-hero-video"
+          src="/Vidéo_Irrigation_Automatique_Prête.mp4"
+          poster="/Poster.png"
+          autoPlay
+          loop
+          muted
+          playsInline
         />
         <div className="realisation-hero-content">
           <h1>L'agriculture de précision, du champ à votre écran.</h1>

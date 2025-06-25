@@ -21,6 +21,8 @@ import AdminNews from './pages/AdminNews';
 import AdminRealisations from './pages/AdminRealisations';
 import DashboardAdmin from './pages/DashboardAdmin';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminSolutions from './pages/AdminSolutions';
+import AdminPartners from './pages/AdminPartners';
 
 const router = createBrowserRouter([
   {
@@ -43,6 +45,8 @@ const router = createBrowserRouter([
           { index: true, element: <DashboardAdmin /> },
           { path: "news", element: <AdminNews /> },
           { path: "realisations", element: <AdminRealisations /> },
+          { path: "solutions", element: <AdminSolutions /> },
+          { path: "partners", element: <AdminPartners /> },
         ],
       },
     ],

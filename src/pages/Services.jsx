@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import './Services.css';
 import { FiCheckCircle, FiTrendingUp, FiUsers, FiDroplet, FiBarChart2, FiCpu, FiChevronDown, FiChevronLeft, FiChevronRight, FiHelpCircle, FiClock, FiCloud, FiAward } from 'react-icons/fi';
+import { supabase } from '../supabaseClient';
 
 const heroImg = 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80';
 const stats = [
@@ -70,39 +71,6 @@ const testimonials = [
   { name: "Awa D.", quote: "Grâce à SERVAGRI, j'ai réduit mes coûts et gagné du temps !", img: '/servagri_logo.png' },
   { name: "Moussa K.", quote: "Un accompagnement humain et des outils performants.", img: '/servagri_logo.png' },
 ];
-const partnerIcons = [
-  '/servagri_logo.png',
-  '/servagri_irrigation.png',
-  '/vite.svg',
-  '/client1.png',
-  '/client2.png',
-  '/client3.png',
-];
-function PartnerCarousel() {
-  const [index, setIndex] = useState(0);
-  const visible = 3;
-  const total = partnerIcons.length;
-  const next = () => setIndex((prev) => (prev + 1) % total);
-  const prev = () => setIndex((prev) => (prev - 1 + total) % total);
-  const getVisible = () => {
-    let arr = [];
-    for (let i = 0; i < visible; i++) {
-      arr.push(partnerIcons[(index + i) % total]);
-    }
-    return arr;
-  };
-  return (
-    <div className="partner-carousel">
-      <button className="carousel-arrow left" onClick={prev} aria-label="Précédent"><FiChevronLeft /></button>
-      <div className="carousel-logos">
-        {getVisible().map((logo, i) => (
-          <img src={logo} alt={`Partenaire ${i+1}`} key={i} className="partner-logo-refonte" />
-        ))}
-      </div>
-      <button className="carousel-arrow right" onClick={next} aria-label="Suivant"><FiChevronRight /></button>
-    </div>
-  );
-}
 const faqs = [
   { icon: <FiHelpCircle />, q: "Est-ce adapté à toutes les cultures ?", a: "Oui, nos solutions sont personnalisées pour chaque type de culture." },
   { icon: <FiAward />, q: "Proposez-vous un suivi après installation ?", a: "Oui, notre équipe reste disponible pour vous accompagner au quotidien." },
@@ -122,17 +90,35 @@ function WaveSeparator({ color = "#f1f8e9", flip = false }) {
   );
 }
 
+// Ajout du mapping pour les icônes dynamiques
+const ICONS = {
+  FiCheckCircle: <FiCheckCircle />, FiTrendingUp: <FiTrendingUp />, FiUsers: <FiUsers />, FiDroplet: <FiDroplet />, FiBarChart2: <FiBarChart2 />, FiCpu: <FiCpu />
+};
+
+const partnerIcons = [
+  '/servagri_logo.png',
+  '/vite.svg',
+];
+
 export default function Services() {
   const [faqOpen, setFaqOpen] = useState(null);
+  const [services, setServices] = useState([]);
+  useEffect(() => {
+    supabase.from('solutions').select('*').then(({ data }) => setServices(data || []));
+  }, []);
   return (
     <div className="services-page">
       {/* HERO avec vidéo de fond, overlay et animation */}
       <section className="services-hero-refonte">
         <div className="video-banner-container">
-          <img 
-            src="/Vidéo_Irrigation_Automatique_Prête.gif" 
-            alt="Animation d'un système d'irrigation automatisé"
+          <video
+            src="/Vidéo_Irrigation_Automatique_Prête.mp4"
+            poster="/Poster.png"
             className="realisation-hero-video"
+            autoPlay
+            loop
+            muted
+            playsInline
           />
           <div className="video-banner-overlay">
             <h2>L'innovation au cœur de notre métier</h2>
@@ -183,11 +169,14 @@ export default function Services() {
                 )}
                 <div className="service-img-overlay" />
               </div>
-              <div className="service-icon-refonte">{s.icon}</div>
-              {s.badge && <div className={`service-badge ${s.badgeClass}`}>{s.badge}</div>}
+              {/* Affichage de l'icône dynamique */}
+              <div className="service-icon-refonte">{ICONS[s.icon] || <FiCheckCircle />}</div>
+              {/* Badge dynamique, attention au mapping badgeclass */}
+              {s.badge && <div className={`service-badge ${s.badgeclass}`}>{s.badge}</div>}
+              {/* Nouveau, attention au mapping isnew */}
               {s.isNew && <span className="service-badge-nouveau">Nouveau</span>}
               <h3>{s.title}</h3>
-              <p>{s.desc}</p>
+              <p>{s.description}</p>
             </motion.div>
           ))}
         </div>
@@ -259,6 +248,32 @@ export default function Services() {
           ))}
         </div>
       </section>
+    </div>
+  );
+}
+
+function PartnerCarousel() {
+  const [index, setIndex] = useState(0);
+  const visible = 3;
+  const total = partnerIcons.length;
+  const next = () => setIndex((prev) => (prev + 1) % total);
+  const prev = () => setIndex((prev) => (prev - 1 + total) % total);
+  const getVisible = () => {
+    let arr = [];
+    for (let i = 0; i < visible; i++) {
+      arr.push(partnerIcons[(index + i) % total]);
+    }
+    return arr;
+  };
+  return (
+    <div className="partner-carousel">
+      <button className="carousel-arrow left" onClick={prev} aria-label="Précédent"><FiChevronLeft /></button>
+      <div className="carousel-logos">
+        {getVisible().map((logo, i) => (
+          <img src={logo} alt={`Partenaire ${i+1}`} key={i} className="partner-logo-refonte" />
+        ))}
+      </div>
+      <button className="carousel-arrow right" onClick={next} aria-label="Suivant"><FiChevronRight /></button>
     </div>
   );
 } 
