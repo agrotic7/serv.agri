@@ -1359,4 +1359,89 @@
   .pro-carousel-one-item { min-width: 90vw; max-width: 98vw; padding: 8px 0; }
   .pro-carousel-one-arrow { width: 36px; height: 36px; font-size: 1.3rem; margin: 0 6px; }
   .pro-carousel-one-dots span { width: 9px; height: 9px; }
+}
+
+@media (max-width: 900px) {
+  .pro-detail-card {
+    padding: 10px 2vw 18px 2vw;
+    margin: 12px 0;
+    border-radius: 18px;
+  }
+  .pro-detail-title {
+    font-size: 1.5rem;
+  }
+  .pro-detail-gallery {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 8px 2px;
+  }
+  .pro-detail-img, .pro-detail-video {
+    height: 180px;
+    border-radius: 10px;
+  }
+  .pro-detail-lightbox-img, .pro-detail-lightbox-video {
+    max-width: 98vw;
+    max-height: 50vh;
+    border-radius: 10px;
+  }
+  .pro-detail-lightbox-close, .pro-detail-lightbox-nav.left, .pro-detail-lightbox-nav.right {
+    top: 12px;
+    font-size: 1.5rem;
+    width: 36px;
+    height: 36px;
+  }
+  .pro-carousel {
+    gap: 10px;
+    padding: 4px 0;
+  }
+  .pro-carousel-item {
+    min-width: 98vw;
+    max-width: 98vw;
+    border-radius: 10px;
+  }
+}
+@media (max-width: 600px) {
+  .pro-detail-card {
+    padding: 4px 0 10px 0;
+    margin: 4px 0;
+    border-radius: 10px;
+  }
+  .pro-detail-title {
+    font-size: 1.1rem;
+  }
+  .pro-detail-gallery {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 2px 0;
+  }
+  .pro-detail-img, .pro-detail-video {
+    height: 120px;
+    border-radius: 7px;
+  }
+  .pro-detail-lightbox-img, .pro-detail-lightbox-video {
+    max-width: 99vw;
+    max-height: 38vh;
+    border-radius: 7px;
+  }
+  .pro-detail-lightbox-close, .pro-detail-lightbox-nav.left, .pro-detail-lightbox-nav.right {
+    top: 6px;
+    font-size: 1.1rem;
+    width: 28px;
+    height: 28px;
+  }
+  .pro-carousel {
+    gap: 4px;
+    padding: 2px 0;
+  }
+  .pro-carousel-item {
+    min-width: 99vw;
+    max-width: 99vw;
+    border-radius: 7px;
+  }
+  .pro-detail-thumb-counter {
+    font-size: 0.7rem;
+    padding: 1px 5px;
+    top: 4px;
+    right: 6px;
+  }
 } 
