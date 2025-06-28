@@ -23,6 +23,7 @@ import DashboardAdmin from './pages/DashboardAdmin';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminSolutions from './pages/AdminSolutions';
 import AdminPartners from './pages/AdminPartners';
+import AdminNewsletter from './pages/AdminNewsletter';
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,7 @@ const router = createBrowserRouter([
           { path: "realisations", element: <AdminRealisations /> },
           { path: "solutions", element: <AdminSolutions /> },
           { path: "partners", element: <AdminPartners /> },
+          { path: "newsletters", element: <AdminNewsletter /> },
         ],
       },
     ],

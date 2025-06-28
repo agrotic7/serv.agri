@@ -1,7 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { supabase } from '../supabaseClient';
 import './Footer.css'; // Importation du fichier CSS
 
 function Footer() {
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const handleNewsletterSubmit = async (e) => {
+    e.preventDefault();
+    setMessage('');
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      setMessage('Veuillez entrer un email valide.');
+      return;
+    }
+    setLoading(true);
+    const { error } = await supabase.from('newsletter').insert([{ email }]);
+    setLoading(false);
+    if (error) {
+      if (error.code === '23505' || error.message.includes('duplicate')) {
+        setMessage('Cet email est déjà inscrit.');
+      } else {
+        setMessage("Une erreur s'est produite. Veuillez réessayer.");
+      }
+    } else {
+      setMessage('Merci pour votre inscription !');
+      setEmail('');
+    }
+  };
+
   return (
     <footer className="footer-section">
       <div className="footer-newsletter">
@@ -15,9 +42,24 @@ function Footer() {
         <div className="footer-newsletter-center">
           <span className="newsletter-title">NEWSLETTER</span>
           <span className="newsletter-desc">Inscrivez-vous pour ne rien manquer</span>
+          <form className="newsletter-form" onSubmit={handleNewsletterSubmit} style={{marginTop:'0.7rem', display:'flex', gap:'0.5rem', alignItems:'center'}}>
+            <input
+              type="email"
+              className="newsletter-input"
+              placeholder="Votre email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              disabled={loading}
+              required
+              style={{padding:'0.5rem 1rem', borderRadius:'20px', border:'1px solid #c8d7c1', fontSize:'1rem'}}
+            />
+            <button type="submit" className="newsletter-btn" disabled={loading} style={{minWidth:'120px'}}>
+              {loading ? 'Envoi...' : "+ Je m'inscris"}
+            </button>
+          </form>
+          {message && <div style={{marginTop:'0.5rem', color: message.includes('Merci') ? '#4bbf73' : '#c0392b', fontWeight:500, fontSize:'0.98rem'}}>{message}</div>}
         </div>
         <div className="footer-newsletter-right">
-          <button className="newsletter-btn">+ Je m'inscris</button>
           <span className="footer-scrolltop"><i className="fas fa-arrow-up"></i></span>
         </div>
       </div>

@@ -98,6 +98,7 @@ const ICONS = {
 const partnerIcons = [
   '/servagri_logo.png',
   '/vite.svg',
+  '/logo_ussein.jpg'
 ];
 
 export default function Services() {

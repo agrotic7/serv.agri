@@ -179,6 +179,23 @@ function AdminNews() {
       item.excerpt?.toLowerCase().includes(newsSearchTerm.toLowerCase())
     );
 
+  // Envoi de la newsletter (DEMO)
+  const handleSendNewsletter = async () => {
+    if (!formData.title || !formData.content) {
+      alert('Veuillez remplir le titre et le contenu de l\'actualité à envoyer.');
+      return;
+    }
+    const { data, error } = await supabase.from('newsletter').select('email');
+    if (error) {
+      alert("Erreur lors de la récupération des emails newsletter.");
+      return;
+    }
+    const emails = data.map(e => e.email);
+    // Pour la démo, on affiche la liste. Pour l'envoi réel, il faudra appeler un service d'emailing ici.
+    alert(`Emails destinataires (à brancher sur un service d'emailing) :\n${emails.join(', ')}`);
+    // TODO: Intégrer un service d'emailing (Mailjet, Brevo, etc.) pour envoyer la newsletter à tous ces emails.
+  };
+
   // Toast de succès
   const SuccessToast = ({ message, show }) => (
     <div style={{
@@ -326,6 +343,9 @@ function AdminNews() {
           <div className="form-actions">
             <button type="submit" className="submit-btn" disabled={loading}>
               {editingId ? 'Modifier' : 'Ajouter'} Actualité
+            </button>
+            <button type="button" className="admin-news-btn" style={{marginLeft:'1rem', background:'#4bbf73'}} onClick={handleSendNewsletter}>
+              Envoyer cette actualité par newsletter
             </button>
           </div>
         </form>
