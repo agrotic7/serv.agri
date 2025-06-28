@@ -53,15 +53,44 @@ function Realisation() {
         <div className="realisation-grid">
           {realisations.map((item, idx) => (
             <article
-              className="realisation-card-pro"
+              className="realisation-card-pro pro-list-card"
               key={item.id}
             >
-              <div className="realisation-image-container-pro">
-                <img 
-                  src={item.image} 
-                  alt={item.title} 
-                  className="realisation-image-pro" 
-                />
+              <div className="realisation-image-container-pro pro-list-thumb">
+                {item.medias && item.medias.length > 0 ? (
+                  <div className="realisation-media-gallery">
+                    {item.medias[0].type === 'image' ? (
+                      <img 
+                        src={item.medias[0].url} 
+                        alt={item.title} 
+                        className="realisation-image-pro pro-list-img" 
+                        style={{aspectRatio:'16/9',objectFit:'cover'}}
+                      />
+                    ) : (
+                      <div style={{position:'relative',width:'100%',aspectRatio:'16/9',background:'#222',borderRadius:'12px',overflow:'hidden'}}>
+                        <video 
+                          src={item.medias[0].url} 
+                          alt={item.title} 
+                          className="realisation-image-pro pro-list-img"
+                          muted
+                          loop
+                          playsInline
+                          style={{width:'100%',height:'100%',objectFit:'cover',filter:'brightness(0.7)'}}
+                        />
+                        <span className="pro-list-play-icon">▶</span>
+                      </div>
+                    )}
+                    {item.medias.length > 1 && (
+                      <div className="media-count-badge pro-list-badge">
+                        +{item.medias.length - 1}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="realisation-image-placeholder pro-list-placeholder">
+                    <span>Aucun média</span>
+                  </div>
+                )}
               </div>
               <div className="realisation-content-pro">
                 <h3 className="realisation-card-title-pro">{item.title}</h3>

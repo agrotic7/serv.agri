@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { FiAward } from 'react-icons/fi';
 import './News.css'; // <-- Utiliser directement le CSS des actualités
 import './Realisation.css'; // Garder pour le style des cartes
@@ -43,7 +43,7 @@ function RealisationCardHorizontal({ item, onReadMore }) {
             {item.year && <span className="label-year">{item.year}</span>}
           </div>
         )}
-        <img src={item.images && item.images.length > 0 ? item.images[0] : item.image} alt={item.title} className="realisation-horizontal-img" />
+        <img src={item.medias && item.medias.length > 0 ? item.medias[0].url : ''} alt={item.title} className="realisation-horizontal-img" />
       </div>
       <div className="realisation-horizontal-text">
         <button className="realisation-horizontal-title-btn" onClick={() => onReadMore(item)}>
@@ -57,6 +57,7 @@ function RealisationCardHorizontal({ item, onReadMore }) {
 
 function LatestRealisations() {
   const [realisations, setRealisations] = useState([]);
+  const [carouselIndex, setCarouselIndex] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -65,7 +66,7 @@ function LatestRealisations() {
         .from('realisations')
         .select('*')
         .order('created_at', { ascending: false })
-        .limit(3);
+        .limit(10);
       if (error) {
         console.error("Erreur lors de la récupération des réalisations:", error);
       } else {
@@ -79,24 +80,48 @@ function LatestRealisations() {
     navigate(`/realisation/${item.id}`);
   };
 
+  const handleCarouselNav = (dir) => {
+    if (realisations.length === 0) return;
+    let next = carouselIndex + dir;
+    if (next < 0) next = realisations.length - 1;
+    if (next >= realisations.length) next = 0;
+    setCarouselIndex(next);
+  };
+
   return (
     <div className="news-section">
       <div className="news-header">
         <h2 className="news-title">Nos Dernières Réalisations</h2>
         <p className="news-subtitle">Découvrez un aperçu de nos projets les plus récents.</p>
       </div>
-      <div className="realisation-horizontal-list">
-        {realisations.map((item, idx) => (
-          <motion.div
-            key={item.id}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5, delay: idx * 0.12 }}
-          >
-            <RealisationCardHorizontal item={item} onReadMore={handleReadMore} />
-          </motion.div>
-        ))}
+      <div className="pro-carousel-one-wrap">
+        <button className="pro-carousel-one-arrow left" onClick={() => handleCarouselNav(-1)} aria-label="Précédent">&#8592;</button>
+        <div className="pro-carousel-one-item">
+          <AnimatePresence mode="wait">
+            {realisations.length > 0 && (
+              <motion.div
+                key={realisations[carouselIndex]?.id}
+                initial={{ opacity: 0, x: 60 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -60 }}
+                transition={{ duration: 0.35, ease: 'easeInOut' }}
+                className="pro-carousel-one-card-anim"
+              >
+                <RealisationCardHorizontal item={realisations[carouselIndex]} onReadMore={handleReadMore} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+        <button className="pro-carousel-one-arrow right" onClick={() => handleCarouselNav(1)} aria-label="Suivant">&#8594;</button>
+      </div>
+      <div className="pro-carousel-one-indicator">
+        {realisations.length > 1 && (
+          <div className="pro-carousel-one-dots">
+            {realisations.map((_, idx) => (
+              <span key={idx} className={idx === carouselIndex ? 'active' : ''}></span>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

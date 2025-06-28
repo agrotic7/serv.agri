@@ -26,7 +26,7 @@ function AdminRealisations() {
   const [formData, setFormData] = useState({
     title: '',
     date: '',
-    image: '',
+    medias: [],
     description: '',
     excerpt: '',
     fullContent: '',
@@ -36,11 +36,11 @@ function AdminRealisations() {
   const [editingId, setEditingId] = useState(null);
   const [realisationFilter, setRealisationFilter] = useState('all');
   const [realisationSearchTerm, setRealisationSearchTerm] = useState('');
-  const [imagePreview, setImagePreview] = useState(null);
+  const [mediaFiles, setMediaFiles] = useState([]);
+  const [mediaPreviews, setMediaPreviews] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
-  const [imageFile, setImageFile] = useState(null);
   const [showSuccessOverlay, setShowSuccessOverlay] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [toDeleteId, setToDeleteId] = useState(null);
@@ -66,16 +66,18 @@ function AdminRealisations() {
     }));
   };
 
-  const handleImageChange = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-  };
-      reader.readAsDataURL(file);
-    }
+  const handleMediaChange = (e) => {
+    const files = Array.from(e.target.files);
+    setMediaFiles(files);
+    const previews = files.map(file => {
+      if (file.type.startsWith('image/')) {
+        return { type: 'image', url: URL.createObjectURL(file) };
+      } else if (file.type.startsWith('video/')) {
+        return { type: 'video', url: URL.createObjectURL(file) };
+      }
+      return null;
+    }).filter(Boolean);
+    setMediaPreviews(previews);
   };
 
   const handleSubmit = async (e) => {
@@ -87,20 +89,32 @@ function AdminRealisations() {
       return;
     }
     setLoading(true);
-    let imageUrl = formData.image;
+    let medias = formData.medias || [];
     try {
-      if (imageFile) {
-        imageUrl = await uploadImageToStorage(imageFile);
+      if (mediaFiles.length > 0) {
+        medias = [];
+        for (let file of mediaFiles) {
+          const fileExt = file.name.split('.').pop();
+          const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+          const { data, error } = await supabase.storage.from('realisations').upload(fileName, file, {
+            cacheControl: '3600',
+            upsert: false
+          });
+          if (error) throw error;
+          const { data: publicUrlData } = supabase.storage.from('realisations').getPublicUrl(fileName);
+          medias.push({
+            type: file.type.startsWith('image/') ? 'image' : 'video',
+            url: publicUrlData.publicUrl
+          });
+        }
       }
       if (editingId) {
-        // Update
-        console.log('FormData envoyé à Supabase:', formData);
         const { error } = await supabase
           .from('realisations')
           .update({
             title: formData.title,
             date: formData.date,
-            image: imageUrl,
+            medias,
             description: formData.description,
             excerpt: formData.excerpt,
             fullContent: formData.fullContent,
@@ -111,29 +125,27 @@ function AdminRealisations() {
         if (!error) {
           setEditingId(null);
           setFormData({
-            title: '', date: '', image: '', description: '', excerpt: '', fullContent: '', status: 'draft', featured: false
+            title: '', date: '', medias: [], description: '', excerpt: '', fullContent: '', status: 'draft', featured: false
           });
-          setImagePreview(null);
-          setImageFile(null);
+          setMediaPreviews([]);
+          setMediaFiles([]);
           setSuccessMsg('Réalisation modifiée avec succès !');
           setShowSuccessOverlay(true);
           setTimeout(() => setShowSuccessOverlay(false), 2000);
           fetchRealisations();
         } else {
           setErrorMsg(error.message || 'Erreur lors de la modification.');
-    }
+        }
       } else {
-        // Insert
-        console.log('FormData envoyé à Supabase:', formData);
         const { error } = await supabase
           .from('realisations')
-          .insert([{ ...formData, image: imageUrl, created_at: new Date().toISOString() }]);
+          .insert([{ ...formData, medias, created_at: new Date().toISOString() }]);
         if (!error) {
           setFormData({
-            title: '', date: '', image: '', description: '', excerpt: '', fullContent: '', status: 'draft', featured: false
-      });
-          setImagePreview(null);
-          setImageFile(null);
+            title: '', date: '', medias: [], description: '', excerpt: '', fullContent: '', status: 'draft', featured: false
+          });
+          setMediaPreviews([]);
+          setMediaFiles([]);
           setSuccessMsg('Réalisation ajoutée avec succès !');
           setShowSuccessOverlay(true);
           setTimeout(() => setShowSuccessOverlay(false), 2000);
@@ -143,7 +155,7 @@ function AdminRealisations() {
         }
       }
     } catch (err) {
-      setErrorMsg(err.message || 'Erreur lors de l\'upload de l\'image.');
+      setErrorMsg(err.message || 'Erreur lors de l\'upload des médias.');
     }
     setLoading(false);
   };
@@ -152,15 +164,18 @@ function AdminRealisations() {
     setFormData({
       title: item.title || '',
       date: item.date || '',
-      image: item.image || '',
+      medias: item.medias || [],
       description: item.description || '',
       excerpt: item.excerpt || '',
       fullContent: item.fullContent || '',
       status: item.status || 'draft',
       featured: item.featured || false
     });
-    setImagePreview(item.image || null);
-    setImageFile(null);
+    setMediaPreviews(item.medias.map(media => ({
+      type: media.type,
+      url: media.url
+    })));
+    setMediaFiles([]);
     setEditingId(item.id);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -297,13 +312,26 @@ function AdminRealisations() {
           </div>
           <div className="form-aside">
             <div className="form-group">
-              <label htmlFor="real-image-upload" className="image-upload">
-                {formData.image ? 'Changer l\'image' : 'Ajouter une image'}
-                <input type="file" id="real-image-upload" className="image-input" onChange={handleImageChange} accept="image/*" />
+              <label htmlFor="real-media-upload" className="image-upload">
+                {mediaFiles.length > 0 ? 'Changer les médias' : 'Ajouter des images/vidéos'}
+                <input
+                  type="file"
+                  id="real-media-upload"
+                  className="image-input"
+                  onChange={handleMediaChange}
+                  accept="image/*,video/*"
+                  multiple
+                />
               </label>
-              {imagePreview && (
-                <div className="image-preview">
-                  <img src={imagePreview} alt="Aperçu" />
+              {mediaPreviews.length > 0 && (
+                <div className="media-preview-list" style={{display:'flex',gap:8,flexWrap:'wrap',marginTop:8}}>
+                  {mediaPreviews.map((media, idx) =>
+                    media.type === 'image' ? (
+                      <img key={idx} src={media.url} alt="Aperçu" style={{maxWidth:80,maxHeight:80,borderRadius:6}} />
+                    ) : (
+                      <video key={idx} src={media.url} style={{maxWidth:80,maxHeight:80,borderRadius:6}} controls />
+                    )
+                  )}
                 </div>
               )}
             </div>
@@ -311,10 +339,10 @@ function AdminRealisations() {
               <button type="button" onClick={() => {
                 setEditingId(null);
                 setFormData({
-                  title: '', date: '', image: '', description: '', excerpt: '', fullContent: '', status: 'draft', featured: false
+                  title: '', date: '', medias: [], description: '', excerpt: '', fullContent: '', status: 'draft', featured: false
                 });
-                setImagePreview(null);
-                setImageFile(null);
+                setMediaPreviews([]);
+                setMediaFiles([]);
               }} className="cancel-edit-btn">
                 Annuler la modification
               </button>
@@ -361,7 +389,7 @@ function AdminRealisations() {
               transition={{ duration: 0.5, delay: idx * 0.08 }}
             >
               <div className="item-image">
-                {item.image && <img src={item.image} alt={item.title} />}
+                {(item.medias && item.medias.length > 0 && item.medias[0].type === 'image') && <img src={item.medias[0].url} alt={item.title} />}
               </div>
               <div className="item-title">{item.title}</div>
               <div className="item-date">{item.date}</div>
