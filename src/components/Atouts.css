@@ -1,0 +1,163 @@
+.atouts-section {
+  padding: 6rem 8rem;
+  background: linear-gradient(135deg, white 0%, var(--bg-light) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.atouts-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.atout-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2.5rem;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease-in-out;
+  border: 1px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.atout-card::before {
+  display: none;
+}
+
+.atout-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary-green);
+}
+
+.atout-icon {
+  background: linear-gradient(135deg, var(--light-green) 0%, white 100%);
+  border-radius: 50%;
+  padding: 1.2rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90px;
+  height: 90px;
+  box-shadow: 0 10px 30px rgba(46, 125, 50, 0.15);
+  transition: all 0.3s ease-in-out;
+  margin: 0 auto 2rem;
+}
+
+.atout-card:hover .atout-icon {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 15px 35px rgba(var(--primary-green-rgb), 0.2);
+}
+
+.atout-card h3 {
+  font-size: 1.4rem;
+  color: var(--text-dark);
+  margin-bottom: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.atout-card p {
+  font-size: 1rem;
+  color: var(--text-medium);
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0.9;
+}
+
+@media (max-width: 1200px) {
+  .atouts-section {
+    padding: 5rem 4rem;
+  }
+  
+  .atouts-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+  }
+
+  .atout-card {
+    padding: 3rem 2.5rem;
+  }
+
+  .atout-icon {
+    width: 110px;
+    height: 110px;
+    padding: 1.8rem;
+  }
+
+  .atout-card h3 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .atouts-section {
+    padding: 4rem 2rem;
+  }
+  
+  .atouts-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .atout-card {
+    padding: 2.5rem 2rem;
+  }
+
+  .atout-icon {
+    width: 100px;
+    height: 100px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .atout-card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .atout-card p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 480px) {
+  .atouts-section {
+    padding: 3rem 1.5rem;
+  }
+
+  .atouts-grid {
+    gap: 1.5rem;
+  }
+
+  .atout-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .atout-icon {
+    width: 90px;
+    height: 90px;
+    padding: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .atout-card h3 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .atout-card p {
+    font-size: 1rem;
+  }
+} 
