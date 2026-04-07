@@ -3,7 +3,7 @@ import { motion, useInView } from 'framer-motion';
 import { Helmet } from 'react-helmet';
 import './Services.css';
 import { FiCheckCircle, FiTrendingUp, FiUsers, FiDroplet, FiBarChart2, FiCpu, FiChevronDown, FiChevronLeft, FiChevronRight, FiHelpCircle, FiClock, FiCloud, FiAward } from 'react-icons/fi';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../services/supabase';
 
 const heroImg = 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80';
 const stats = [

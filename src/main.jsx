@@ -5,26 +5,27 @@ import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/custom-bootstrap.css'
 import App from './App'
-import ErrorBoundary from './components/ErrorBoundary';
+import ErrorBoundary from './components/ui/ErrorBoundary';
 
 // Lazy loading de toutes les pages pour optimiser le bundle initial
 const Home = lazy(() => import('./pages/Home'));
 const Services = lazy(() => import('./pages/Services'));
-const Contact = lazy(() => import('./components/Contact'));
-const News = lazy(() => import('./components/News'));
-const NewsDetail = lazy(() => import('./pages/NewsDetail'));
-const Realisation = lazy(() => import('./components/Realisation'));
-const RealisationDetail = lazy(() => import('./pages/RealisationDetail'));
+const Contact = lazy(() => import('./features/contact/Contact'));
+const News = lazy(() => import('./features/news/News'));
+const NewsDetail = lazy(() => import('./features/news/NewsDetail'));
+const Realisation = lazy(() => import('./features/realisations/Realisation'));
+const RealisationDetail = lazy(() => import('./features/realisations/RealisationDetail'));
 const Login = lazy(() => import('./pages/Login'));
-const Admin = lazy(() => import('./pages/Admin'));
-const AdminNews = lazy(() => import('./pages/AdminNews'));
-const AdminRealisations = lazy(() => import('./pages/AdminRealisations'));
-const DashboardAdmin = lazy(() => import('./pages/DashboardAdmin'));
-const AdminSolutions = lazy(() => import('./pages/AdminSolutions'));
-const AdminPartners = lazy(() => import('./pages/AdminPartners'));
-const AdminNewsletter = lazy(() => import('./pages/AdminNewsletter'));
-const AdminContacts = lazy(() => import('./pages/AdminContacts'));
-const ProtectedRoute = lazy(() => import('./components/ProtectedRoute'));
+const Admin = lazy(() => import('./pages/admin/Admin'));
+const AdminNews = lazy(() => import('./pages/admin/AdminNews'));
+const AdminRealisations = lazy(() => import('./pages/admin/AdminRealisations'));
+const DashboardAdmin = lazy(() => import('./pages/admin/DashboardAdmin'));
+const AdminSolutions = lazy(() => import('./pages/admin/AdminSolutions'));
+const AdminPartners = lazy(() => import('./pages/admin/AdminPartners'));
+const AdminNewsletter = lazy(() => import('./pages/admin/AdminNewsletter'));
+const AdminContacts = lazy(() => import('./pages/admin/AdminContacts'));
+const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'));
+const ProtectedRoute = lazy(() => import('./components/ui/ProtectedRoute'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Loader de fallback pendant le chargement lazy
@@ -67,6 +68,7 @@ const router = createBrowserRouter([
           { path: "partners", element: <Suspense fallback={<PageLoader />}><AdminPartners /></Suspense> },
           { path: "newsletters", element: <Suspense fallback={<PageLoader />}><AdminNewsletter /></Suspense> },
           { path: "contacts", element: <Suspense fallback={<PageLoader />}><AdminContacts /></Suspense> },
+          { path: "settings", element: <Suspense fallback={<PageLoader />}><AdminSettings /></Suspense> },
         ],
       },
       { path: "*", element: <Suspense fallback={<PageLoader />}><NotFound /></Suspense> },

@@ -1,12 +1,13 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import HeroPro from '../components/HeroPro';
-import ProblemSolution from '../components/ProblemSolution';
-import Atouts from '../components/Atouts';
-import ChiffresCles from '../components/ChiffresCles';
-import Testimonials from '../components/Testimonials';
-import NewsSection from '../components/NewsSection';
-import LatestRealisations from '../components/LatestRealisations';
+import HeroPro from '../components/sections/HeroPro';
+import ProblemSolution from '../components/sections/ProblemSolution';
+import Atouts from '../components/sections/Atouts';
+import ChiffresCles from '../components/sections/ChiffresCles';
+import Testimonials from '../components/sections/Testimonials';
+import NewsSection from '../components/sections/NewsSection';
+import LatestRealisations from '../components/sections/LatestRealisations';
+import PartnerCarousel from '../components/sections/PartnerCarousel';
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
         <meta property="og:description" content="Solutions d’irrigation connectée, Big Data et agriculture de précision pour les agriculteurs sénégalais." />
       </Helmet>
       <HeroPro />
+      <PartnerCarousel />
       <ProblemSolution />
       <Atouts />
       <ChiffresCles />

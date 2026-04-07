@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../services/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiAward } from 'react-icons/fi';
-import './News.css'; // <-- Utiliser directement le CSS des actualités
-import './Realisation.css'; // Garder pour le style des cartes
-import './Atouts.css'; // Importer les styles pour les titres
+import '../../features/news/News.css';
+import '../../features/realisations/Realisation.css';
+import './Atouts.css';
 import './LatestRealisations.css'; // J'ajoute un fichier CSS dédié pour le style horizontal
 
 function ImageCarousel({ images = [] }) {

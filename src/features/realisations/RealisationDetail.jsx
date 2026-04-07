@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../services/supabase';
 import { motion } from 'framer-motion';
 import './RealisationDetail.css';
 import { FaPlayCircle, FaTimes, FaChevronLeft, FaChevronRight } from 'react-icons/fa';

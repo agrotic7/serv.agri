@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import './NewsDetail.css';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../services/supabase';
 import { useState as useSessionState, useEffect as useSessionEffect } from 'react';
 import { Helmet } from 'react-helmet';
 

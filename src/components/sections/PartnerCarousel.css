@@ -1,0 +1,70 @@
+.partner-carousel-section {
+  padding: 60px 0;
+  background: #fdfdfd;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+  overflow: hidden;
+}
+
+.partner-title {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+/* Le conteneur du défilement */
+.partner-slider {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+
+.partner-track {
+  display: flex;
+  width: calc(250px * 18); /* Un multiple de la largeur des slides */
+  animation: scroll 30s linear infinite;
+  gap: 60px;
+  align-items: center;
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-250px * 6 - 360px)); } /* Calculé selon le nombre de logos uniques */
+}
+
+.partner-slide {
+  width: 150px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.partner-slide img {
+  max-width: 120px;
+  max-height: 50px;
+  object-fit: contain;
+  filter: grayscale(100%) opacity(0.6);
+  transition: all 0.3s ease;
+}
+
+.partner-slider:hover .partner-track {
+  animation-play-state: paused;
+}
+
+.partner-slide img:hover {
+  filter: grayscale(0%) opacity(1);
+  transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  .partner-track {
+    gap: 40px;
+  }
+}

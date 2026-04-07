@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import { motion, AnimatePresence } from 'framer-motion';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../services/supabase';
 
 function Login() {
   const navigate = useNavigate();

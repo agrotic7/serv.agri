@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../services/supabase';
 import { motion, useInView } from 'framer-motion';
 import './Realisation.css';
 
@@ -40,7 +40,14 @@ function Realisation() {
         .from('realisations')
         .select('*')
         .order('created_at', { ascending: false });
-      if (!error) setRealisations(data || []);
+      
+      console.log('Réalisations fetch result:', { data, error });
+
+      if (error) {
+        console.error('Erreur lors du chargement des réalisations:', error);
+      } else {
+        setRealisations(data || []);
+      }
     };
     fetchRealisations();
   }, []);

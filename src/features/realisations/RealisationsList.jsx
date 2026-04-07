@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../services/supabase';
 
 const RealisationsList = () => {
   const [realisations, setRealisations] = useState([]);

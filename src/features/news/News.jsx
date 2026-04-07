@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import './News.css';
 import { motion } from 'framer-motion';
-import { supabase } from '../supabaseClient';
-import './Realisation.css';
+import { supabase } from '../../services/supabase';
+import '../realisations/Realisation.css';
 
 function News() {
   const [news, setNews] = useState([]);

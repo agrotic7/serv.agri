@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import './Contact.css';
-import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../services/supabase';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiCheckCircle, FiAlertCircle, FiLoader } from 'react-icons/fi';
 
 
 const Contact = () => {
@@ -74,6 +75,27 @@ const Contact = () => {
         <meta name="description" content="Contactez l'équipe SERVAGRI pour toute demande de devis, d'information ou d'accompagnement sur vos projets d'irrigation et d'agriculture de précision au Sénégal." />
       </Helmet>
       <section className="contact-page-section py-5" id="contact">
+        <AnimatePresence>
+          {status === 'sending' && (
+            <motion.div className="contact-toast sending" initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -50 }}>
+              <FiLoader className="toast-icon spin" />
+              <span>Envoi de votre message...</span>
+            </motion.div>
+          )}
+          {status === 'success' && (
+            <motion.div className="contact-toast success" initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -50 }}>
+              <FiCheckCircle className="toast-icon" />
+              <span>Message envoyé avec succès !</span>
+            </motion.div>
+          )}
+          {status === 'error' && (
+            <motion.div className="contact-toast error" initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -50 }}>
+              <FiAlertCircle className="toast-icon" />
+              <span>Erreur : Veuillez remplir tous les champs.</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <div className="container">
           <div className="section-header text-center mb-5">
             <h2 className="display-4 fw-bold text-dark mb-3">Contactez-nous</h2>
@@ -175,9 +197,6 @@ const Contact = () => {
                       Envoyer le Message <i className="fas fa-paper-plane"></i>
                     </button>
                   </div>
-                  {status === 'sending' && <div className="alert alert-info mt-3 text-center">Envoi en cours...</div>}
-                  {status === 'success' && <div className="alert alert-success mt-3 text-center">Message envoyé avec succès!</div>}
-                  {status === 'error' && <div className="alert alert-danger mt-3 text-center">Erreur lors de l'envoi. Veuillez remplir tous les champs.</div>}
                 </form>
               </div>
             </div>

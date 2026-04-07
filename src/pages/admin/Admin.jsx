@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Outlet, Link } from 'react-router-dom';
 import './Admin.css';
 import { motion } from 'framer-motion';
-import { supabase } from '../supabaseClient';
-import AdminSidebar from '../components/AdminSidebar';
+import { supabase } from '../../services/supabase';
+import AdminSidebar from '../../components/admin/AdminSidebar';
 import AdminSolutions from './AdminSolutions';
 
 const CATEGORIES = [

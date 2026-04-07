@@ -1,8 +1,9 @@
 import React from 'react';
-import NavBarPro from './components/NavBarPro';
-import Footer from './components/Footer';
+import NavBarPro from './components/layout/NavBarPro';
+import Footer from './components/layout/Footer';
 import { Outlet, useLocation } from 'react-router-dom';
-import ScrollToTop from './components/ScrollToTop';
+import ScrollToTop from './components/layout/ScrollToTop';
+import FloatingContact from './components/ui/FloatingContact';
 
 function App() {
   const location = useLocation();
@@ -15,6 +16,7 @@ function App() {
         <Outlet />
       </main>
       {!hideNavAndFooter && <Footer />}
+      {!hideNavAndFooter && <FloatingContact />}
     </>
   );
 }

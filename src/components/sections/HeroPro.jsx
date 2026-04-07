@@ -1,10 +1,34 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import './HeroPro.css'; // Importation du fichier CSS
+import { supabase } from '../../services/supabase';
+import './HeroPro.css';
 import { FaArrowRight } from 'react-icons/fa';
 
 function HeroPro() {
   const videoRef = useRef(null);
+  const [heroData, setHeroData] = useState({
+    title: "L'agriculture de précision, du champ à votre écran",
+    subtitle: "Boostez vos récoltes et économisez l'eau grâce à nos solutions connectées et intelligentes.",
+    videoUrl: "/Vidéo_Irrigation_Automatique_Prête.mp4"
+  });
+
+  useEffect(() => {
+    const fetchHeroData = async () => {
+      const { data, error } = await supabase
+        .from('settings')
+        .select('*')
+        .single();
+      
+      if (data && !error) {
+        setHeroData({
+          title: data.hero_title || heroData.title,
+          subtitle: data.hero_subtitle || heroData.subtitle,
+          videoUrl: data.hero_video_url || heroData.videoUrl
+        });
+      }
+    };
+    fetchHeroData();
+  }, []);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -12,7 +36,7 @@ function HeroPro() {
         console.error("Erreur de lecture automatique de la vidéo:", error);
       });
     }
-  }, []);
+  }, [heroData.videoUrl]);
   
   const scrollToContent = () => {
     const nextSection = document.querySelector('.atouts-section');
@@ -25,13 +49,15 @@ function HeroPro() {
     <div className="realisation-section-container">
       <section className="realisation-hero">
         <video
+          key={heroData.videoUrl}
           className="realisation-hero-video"
-          src="/Vidéo_Irrigation_Automatique_Prête.mp4"
+          src={heroData.videoUrl}
           poster="/Poster.png"
           autoPlay
           loop
           muted
           playsInline
+          ref={videoRef}
         />
         <div className="realisation-hero-content hero-pro-content">
           <motion.h1
@@ -39,17 +65,15 @@ function HeroPro() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-          >
-            L'agriculture de précision,<br />
-            <span className="hero-pro-title-green">du champ à votre écran</span>
-          </motion.h1>
+            dangerouslySetInnerHTML={{ __html: heroData.title }}
+          />
           <motion.p
             className="hero-pro-desc"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
           >
-            Boostez vos récoltes et économisez l'eau grâce à nos solutions connectées et intelligentes.
+            {heroData.subtitle}
           </motion.p>
           <motion.a
             href="#atouts"
